@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import SignUpForm
+from .forms import SignUpForm, AddRecordForm
 from .models import Record
 
-# Create your views here.
 def home(request):
     records = Record.objects.all()
     #check if logged in
@@ -61,4 +60,37 @@ def delete_record(request, pk):
         return redirect("home")
     else:
         messages.error(request, "You must be logged in to delete a record")
+        return redirect("home")
+    
+def add_record(request):
+    form = AddRecordForm(request.POST or None)
+    if request.user.is_authenticated:
+        if request.method == "POST":
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Record has been added")
+                return redirect("home")
+            else:
+                messages.error(request, "There was an error adding the record")
+        else:
+            form = AddRecordForm()
+            return render(request, "add_record.html", {'form': form})
+    else:
+        messages.error(request, "You must be logged in to add a record")
+        return redirect("home")
+    
+def update_record(request, pk):
+    if request.user.is_authenticated:
+        record = Record.objects.get(id=pk)
+        form = AddRecordForm(request.POST or None, instance=record)
+        if request.method == "POST":
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Record has been updated")
+                return redirect("home")
+            else:
+                messages.error(request, "There was an error updating the record")
+        return render(request, "update_record.html", {'form': form})
+    else:
+        messages.error(request, "You must be logged in to update a record")
         return redirect("home")
