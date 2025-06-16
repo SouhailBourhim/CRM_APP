@@ -1,8 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import SignUpForm, AddRecordForm
-from .models import Record
+from .models import Record, EmailVerificationToken
+import csv
+from django.http import HttpResponse
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 def home(request):
     records = Record.objects.all()
@@ -13,6 +18,14 @@ def home(request):
         #authenticate
         user = authenticate(request, username=username, password=password)
         if user is not None:
+            try:
+                verification = EmailVerificationToken.objects.get(user=user)
+                if not verification.is_verified:
+                    messages.error(request, "Please verify your email before logging in.")
+                    return redirect('home')
+            except EmailVerificationToken.DoesNotExist:
+                pass
+            
             login(request, user)
             messages.success(request,"You have been logged in")
             return redirect("home")
@@ -32,14 +45,10 @@ def register_user(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
-            # auth and log
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            messages.success(request, "You have been registered and logged in")
-            return redirect("home")
+            user = form.save()
+            send_verification_email(user)
+            messages.success(request, "Registration successful! Please check your email to verify your account.")
+            return redirect('home')
     else:
         form = SignUpForm()
     return render(request, "register.html", {'form': form})
@@ -94,3 +103,61 @@ def update_record(request, pk):
     else:
         messages.error(request, "You must be logged in to update a record")
         return redirect("home")
+
+def search_records(request):
+    query = request.GET.get('query', '')
+    if query:
+        records = Record.objects.filter(
+            first_name__icontains=query) | Record.objects.filter(
+            last_name__icontains=query) | Record.objects.filter(
+            email__icontains=query) | Record.objects.filter(
+            phone__icontains=query) | Record.objects.filter(
+            city__icontains=query) | Record.objects.filter(
+            address__icontains=query) | Record.objects.filter(
+            zip_code__icontains=query)
+    else:
+        records = Record.objects.all()
+    return render(request, 'search_results.html', {'records': records, 'query': query})
+
+def export_records_csv(request):
+    response = HttpResponse(content_type='text/csv; charset=utf-8-sig')
+    response['Content-Disposition'] = 'attachment; filename="records.csv"'
+    writer = csv.writer(response, delimiter=';')
+    writer.writerow(['First Name', 'Last Name', 'Email', 'Phone', 'City', 'Address', 'Zip Code'])
+    records = Record.objects.all()
+    for record in records:
+        writer.writerow([record.first_name, record.last_name, record.email, record.phone, record.city, record.address, record.zip_code])
+    return response
+
+def send_verification_email(user):
+    token = EmailVerificationToken.objects.create(user=user)
+    verification_url = f"http://localhost:8000/verify-email/{token.token}/"
+    
+    html_message = render_to_string('email_verification.html', {
+        'user': user,
+        'verification_url': verification_url
+    })
+    
+    plain_message = strip_tags(html_message)
+    
+    send_mail(
+        'Verify your email address',
+        plain_message,
+        None,  # From email (uses DEFAULT_FROM_EMAIL)
+        [user.email],
+        html_message=html_message,
+        fail_silently=False,
+    )
+
+def verify_email(request, token):
+    verification = get_object_or_404(EmailVerificationToken, token=token)
+    
+    if not verification.is_valid():
+        messages.error(request, "Verification link has expired or is invalid.")
+        return redirect('home')
+    
+    verification.is_verified = True
+    verification.save()
+    
+    messages.success(request, "Email verified successfully! You can now log in.")
+    return redirect('home')

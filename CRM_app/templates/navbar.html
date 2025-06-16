@@ -13,6 +13,9 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'logout' %}">Logout</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'export_records_csv' %}">Export to CSV</a>
+        </li>
         {% else %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'register' %}">Register</a>
@@ -22,6 +25,12 @@
         </li>
         {% endif %}
       </ul>
+      {% if user.is_authenticated %}
+      <form class="d-flex" action="{% url 'search_records' %}" method="get">
+        <input class="form-control me-2" type="search" name="query" placeholder="Search for anything..." aria-label="Search" style="padding: 10px;">
+        <button class="btn btn-outline-light" type="submit" style= padding: 10px;">Search</button>
+      </form>
+      {% endif %}
     </div>
   </div>
 </nav>

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Search Results for "{{ query }}"</h1> </br>
+<table class="table">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>City</th>
+            <th>Address</th>
+            <th>Zip Code</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in records %}
+            <tr>
+                <td>{{ record.first_name }}</td>
+                <td>{{ record.last_name }}</td>
+                <td>{{ record.email }}</td>
+                <td>{{ record.phone }}</td>
+                <td>{{ record.city }}</td>
+                <td>{{ record.address }}</td>
+                <td>{{ record.zip_code }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="7">No records found.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %} 
