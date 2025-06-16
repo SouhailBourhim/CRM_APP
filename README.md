@@ -1,61 +1,48 @@
 # 🧠 CRM_APP – Customer Relationship Management System
 
-Welcome to **CRM_APP**, a simple yet powerful Django-based CRM solution to manage clients, deals, and company sales processes effectively.
+**CRM_APP** (also called DCRM) is a web-based Customer Relationship Management system built using Django. It demonstrates key full-stack web development practices and addresses real-world business needs through customer and lead management tools.
 
 ---
 
-## 📌 Features
+## 📌 Key Features
 
-- 🔐 **User Authentication** – Register, login, logout.
-- 🏢 **Organizations** – Each user belongs to an organization for better data separation.
-- 🧍‍♂️ **Leads Management** – Create, update, assign, and categorize leads.
-- ✅ **Agent Assignment** – Admins can assign leads to agents in their organization.
-- 📊 **Dashboards** – Custom views for agents and organizers.
-- ✉️ **Contact Form** – Built-in contact page for communication.
-- 🌐 Fully responsive UI with Django templates.
+- ✅ Complete CRUD operations for customer and lead management
+- 🔐 Secure user authentication and role-based authorization
+- 🖥️ Responsive user interface using Bootstrap
+- 🧠 Clean and modular Django architecture with efficient ORM usage
+- 🧪 Built-in testing suite for core functionalities
+- ⚙️ Form validation and error handling
+- 🗃️ Django ORM for structured and performant database operations
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Backend**: Django 4+
-- **Frontend**: HTML, Bootstrap (via templates)
-- **Database**: SQLite (default; easily switchable)
-- **Forms**: Django Forms & ModelForms
-- **Emailing**: Django’s email backend
+- **Backend**: Django (Python)
+- **Frontend**: HTML, CSS, JavaScript, Bootstrap
+- **Database**: SQLite (via Django ORM)
+- **Authentication**: Django’s built-in security framework
 
 ---
 
 ## 🚀 Getting Started
 
-### 🔄 Clone the repository
+### Clone the repository
 
 ```bash
 git clone https://github.com/SouhailBourhim/CRM_APP.git
 cd CRM_APP
 ```
 
-### 📦 Install dependencies
-
-It is recommended to use a virtual environment.
+### Create a virtual environment and install dependencies
 
 ```bash
 python3 -m venv env
-source env/bin/activate  # On Windows use `env\Scripts\activate`
+source env/bin/activate  # On Windows: env\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### ⚙️ Configure settings
-
-In `crm_project/settings.py`, set up your:
-
-- Secret key 🔑
-- Email backend 💌
-- Debug mode (for development)
-
----
-
-### 🧪 Run migrations and create a superuser
+### Apply migrations and create a superuser
 
 ```bash
 python manage.py makemigrations
@@ -63,47 +50,29 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
-### 🧯 Run the development server
+### Run the development server
 
 ```bash
 python manage.py runserver
 ```
 
-Access it at: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+Then open [http://127.0.0.1:8000](http://127.0.0.1:8000) in your browser.
 
 ---
 
-## 🧪 Testing
-
-Use Django’s built-in test framework:
-
-```bash
-python manage.py test
-```
-
----
-
-## 🗃️ Folder Structure
+## 🗃️ Project Structure
 
 ```
 CRM_APP/
-│
-├── leads/             # Core CRM app logic
-├── agents/            # Agent-specific views & management
-├── landing/           # Landing page & contact form
-├── crm_project/       # Main project settings
-├── templates/         # HTML templates
-├── static/            # Static files
-├── db.sqlite3         # Default database
-├── requirements.txt   # Python packages
+├── agents/           # Agent-specific views and forms
+├── leads/            # Lead management logic
+├── landing/          # Static landing and contact pages
+├── crm_project/      # Main project settings and URLs
+├── templates/        # HTML templates
+├── static/           # Static files (CSS, JS)
+├── requirements.txt  # Dependencies
 └── manage.py
 ```
-
----
-
-## 🤝 Contributing
-
-Pull requests are welcome! Feel free to fork the project and submit PRs. For major changes, open an issue first to discuss your ideas.
 
 ---
 
@@ -116,12 +85,11 @@ This project is licensed under the [MIT License](LICENSE).
 ## 🙋‍♂️ Author
 
 **Souhail Bourhim**  
-📬 [LinkedIn](https://www.linkedin.com/in/souhailbourhim)  
-💻 [Portfolio](https://souhailbourhim.github.io/Projet_dev_init.io/)  
-📫 Contact: via contact form in the app
+🔗 [LinkedIn](https://www.linkedin.com/in/souhail-bourhim-67b878307/)  
+🌐 [Portfolio](https://portfolio-git-main-souhails-projects-dfdb3e43.vercel.app)
 
 ---
 
-## 🌟 Show your support
+## ⭐ Support
 
-If you like this project, consider giving it a ⭐ on [GitHub](https://github.com/SouhailBourhim/CRM_APP)!
+If you find this project helpful, consider starring it on [GitHub](https://github.com/SouhailBourhim/CRM_APP).
