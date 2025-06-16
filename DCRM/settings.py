@@ -129,12 +129,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # For Gmail
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = ''  # Your Gmail address
-EMAIL_HOST_PASSWORD = ''  # Your Gmail app password
-DEFAULT_FROM_EMAIL = ''  # Your Gmail address
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = 'dcrm4797@gmail.com'
+EMAIL_HOST_PASSWORD = 'itag rcxi fkyt mxqv'
+DEFAULT_FROM_EMAIL = 'dcrm4797@gmail.com'
+SERVER_EMAIL = 'dcrm4797@gmail.com'
 
 # Email Verification Settings
-EMAIL_VERIFICATION_TOKEN_EXPIRY = 24  # hours
+EMAIL_VERIFICATION_TOKEN_EXPIRY = 24  
